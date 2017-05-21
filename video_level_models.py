@@ -105,7 +105,7 @@ class FCBNModel(models.BaseModel):
     output = slim.fully_connected(model_input, nb_units, scope="fc1")
     output = slim.batch_norm(output, scope="bn1")
     output = slim.dropout(output, 0.5, scope="dropout1")
-    output = slim.fully_connected(model_input, nb_units, scope="fc2")
+    output = slim.fully_connected(output, nb_units, scope="fc2")
     output = slim.batch_norm(output, scope="bn2")
     output = slim.dropout(output, 0.5, scope="dropout2")
     output = slim.fully_connected(
