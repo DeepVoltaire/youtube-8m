@@ -66,6 +66,28 @@ class FCModel(models.BaseModel):
         output, vocab_size, activation_fn=tf.nn.sigmoid, scope="fc2")
     return {"predictions": output}
 
+class FC2Model(models.BaseModel):
+  """Logistic model with L2 regularization."""
+
+  def create_model(self, model_input, vocab_size, nb_units=1000, l2_penalty=1e-8, **unused_params):
+    """Creates a logistic model.
+
+    Args:
+      model_input: 'batch' x 'num_features' matrix of input features.
+      vocab_size: The number of classes in the dataset.
+
+    Returns:
+      A dictionary with a tensor containing the probability predictions of the
+      model in the 'predictions' key. The dimensions of the tensor are
+      batch_size x num_classes."""
+    output = slim.fully_connected(model_input, nb_units, scope="fc1",
+                                  weights_regularizer=slim.l2_regularizer(l2_penalty))
+    # output = slim.dropout(output, 0.5, scope="dropout1")
+    output = slim.fully_connected(
+        output, vocab_size, activation_fn=tf.nn.sigmoid, scope="fc2",
+        weights_regularizer=slim.l2_regularizer(l2_penalty))
+    return {"predictions": output}
+
 class FCBNModel(models.BaseModel):
   """Logistic model with L2 regularization."""
 
