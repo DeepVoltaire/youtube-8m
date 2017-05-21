@@ -66,6 +66,30 @@ class FCModel(models.BaseModel):
         output, vocab_size, activation_fn=tf.nn.sigmoid, scope="fc2")
     return {"predictions": output}
 
+class FCBNModel(models.BaseModel):
+  """Logistic model with L2 regularization."""
+
+  def create_model(self, model_input, vocab_size, nb_units=2000, **unused_params):
+    """Creates a logistic model.
+
+    Args:
+      model_input: 'batch' x 'num_features' matrix of input features.
+      vocab_size: The number of classes in the dataset.
+
+    Returns:
+      A dictionary with a tensor containing the probability predictions of the
+      model in the 'predictions' key. The dimensions of the tensor are
+      batch_size x num_classes."""
+    output = slim.fully_connected(model_input, nb_units, scope="fc1")
+    output = slim.batch_norm(output, scope="bn1")
+    output = slim.dropout(output, 0.5, scope="dropout1")
+    output = slim.fully_connected(model_input, nb_units, scope="fc2")
+    output = slim.batch_norm(output, scope="bn2")
+    output = slim.dropout(output, 0.5, scope="dropout2")
+    output = slim.fully_connected(
+        output, vocab_size, activation_fn=tf.nn.sigmoid, scope="fc3")
+    return {"predictions": output}
+
 class MoeModel(models.BaseModel):
   """A softmax over a mixture of logistic models (with L2 regularization)."""
 
