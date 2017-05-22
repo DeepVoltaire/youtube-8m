@@ -135,7 +135,7 @@ class FC5Model(models.BaseModel):
         weights_regularizer=slim.l2_regularizer(l2_penalty))
     return {"predictions": output}
 
-class FC5Model(models.BaseModel):
+class FC6Model(models.BaseModel):
 
   def create_model(self, model_input, vocab_size, nb_units=2000, l2_penalty=1e-7, **unused_params):
     output = slim.fully_connected(model_input, nb_units, scope="fc1",
@@ -146,7 +146,7 @@ class FC5Model(models.BaseModel):
         weights_regularizer=slim.l2_regularizer(l2_penalty))
     return {"predictions": output}
 
-class FC6Model(models.BaseModel):
+class FC7Model(models.BaseModel):
   def create_model(self, model_input, vocab_size, nb_units=3000, l2_penalty=1e-8, **unused_params):
     output = slim.fully_connected(model_input, nb_units, scope="fc1",
                                   weights_regularizer=slim.l2_regularizer(l2_penalty))
